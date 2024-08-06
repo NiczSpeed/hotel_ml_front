@@ -1,17 +1,86 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <br />
+  <!-- <strong>Current route path:</strong> {{ $route.fullPath }} -->
+  <div v-if="!$isLogged">
+    <button
+      @click="goToLoginView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      Login
+    </button>
+    <button
+      @click="goToRegisterView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      Register
+    </button>
+    <button
+      @click="goToUserView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      User
+    </button>
+    <button
+      @click="goToAdminView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      Admin
+    </button>
+  </div>
+  <div v-if="!$isLogged">
+    <button @click="logout" style="height: 60px; width: 120px; color: brown">
+      Logout
+    </button>
+  </div>
+
+  <router-view></router-view>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  mounted() {
+    console.log("Current login status:", this.$isLogged); // Wyświetlenie w konsoli
+  },
+  methods: {
+    goToLoginView() {
+      this.$router.push("/login");
+      // this.$router.back();
+      this.$router.forward();
+    },
+    goToRegisterView() {
+      this.$router.push("/register");
+      this.$router.forward();
+    },
+    goToUserView() {
+      this.$router.push("/user");
+      this.$router.forward();
+    },
+    goToAdminView() {
+      this.$router.push("/admin");
+      this.$router.forward();
+    },
+    async logout() {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get("http://localhost:8081/user/logout", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        sessionStorage.removeItem("token");
+        this.data = response.data;
+        window.alert("U were logout out!")
+        this.$router.push("/")
+      } catch (error) {
+        window.alert(error.response.data.message);
+      }
+    },
+  },
+};
 </script>
 
 <style>
