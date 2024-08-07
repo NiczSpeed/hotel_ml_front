@@ -29,6 +29,7 @@ export default {
         this.data = response.data;
       } catch (error) {
         this.data = "U have no access to be here -,-"
+        console.log("Test")
       }
     },
   },
