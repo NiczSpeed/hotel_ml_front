@@ -18,6 +18,7 @@
 
 <script>
 import axios from "axios";
+import { isAdmin } from '../utils/authMethods'
 
 export default {
   name: "LoginView",
@@ -37,13 +38,14 @@ export default {
           this.form
         );
         if (response.status === 201) {
-          const token = response.data.message
-          sessionStorage.setItem('token', token)
-          this.$isLogged = true;
-          this.$router.push('/')
+          const token = response.data.message;
+          sessionStorage.setItem("token", token);
+
+          this.$isAdmin.value = isAdmin();
+          this.$isLogged.value = true;
+          this.$router.push("/");
 
           // window.alert(response.data.message);
-          
         }
       } catch (error) {
         window.alert(error.response.data.message);

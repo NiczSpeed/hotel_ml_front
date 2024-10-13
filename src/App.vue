@@ -2,7 +2,7 @@
   <img alt="Vue logo" src="./assets/logo.png" />
   <br />
   <!-- <strong>Current route path:</strong> {{ $route.fullPath }} -->
-  <div v-if="!$isLogged">
+  <div v-if="!$isLogged.value">
     <button
       @click="goToLoginView"
       style="height: 60px; width: 120px; color: brown"
@@ -15,12 +15,9 @@
     >
       Register
     </button>
-    <button
-      @click="goToUserView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      User
-    </button>
+  </div>
+
+  <div v-if="$isAdmin.value">
     <button
       @click="goToAdminView"
       style="height: 60px; width: 120px; color: brown"
@@ -28,7 +25,14 @@
       Admin
     </button>
   </div>
-  <div v-if="!$isLogged">
+
+  <div v-if="$isLogged.value">
+    <button
+      @click="goToUserView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      User
+    </button>
     <button @click="logout" style="height: 60px; width: 120px; color: brown">
       Logout
     </button>
@@ -38,12 +42,16 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import axios from "axios";
+import { isAdmin } from './utils/authMethods'
 export default {
   name: "App",
   mounted() {
-    console.log("Current login status:", this.$isLogged); // Wyświetlenie w konsoli
+    if(sessionStorage.getItem("token")!=null){
+      this.$isLogged.value = true;
+      this.$isAdmin.value = isAdmin();
+    }
+    console.log("Current login status:", this.$isLogged.value); // Wyświetlenie w konsoli
   },
   methods: {
     goToLoginView() {
@@ -73,8 +81,10 @@ export default {
         });
         sessionStorage.removeItem("token");
         this.data = response.data;
-        window.alert("U were logout out!")
-        this.$router.push("/")
+        window.alert("U were logout out!");
+        this.$router.push("/");
+        this.$isLogged.value = false;
+        this.$isAdmin.value = false;
       } catch (error) {
         window.alert(error.response.data.message);
       }
