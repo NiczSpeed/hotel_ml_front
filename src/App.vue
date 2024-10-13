@@ -24,6 +24,12 @@
     >
       Admin
     </button>
+    <button
+      @click="gotToCreateHotelView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      Hotel
+    </button>
   </div>
 
   <div v-if="$isLogged.value">
@@ -43,15 +49,14 @@
 
 <script>
 import axios from "axios";
-import { isAdmin } from './utils/authMethods'
+import { isAdmin } from "./utils/authMethods";
 export default {
   name: "App",
   mounted() {
-    if(sessionStorage.getItem("token")!=null){
+    if (sessionStorage.getItem("token") != null) {
       this.$isLogged.value = true;
       this.$isAdmin.value = isAdmin();
     }
-    console.log("Current login status:", this.$isLogged.value); // Wyświetlenie w konsoli
   },
   methods: {
     goToLoginView() {
@@ -69,6 +74,10 @@ export default {
     },
     goToAdminView() {
       this.$router.push("/admin");
+      this.$router.forward();
+    },
+    gotToCreateHotelView() {
+      this.$router.push("/hotel/create");
       this.$router.forward();
     },
     async logout() {
