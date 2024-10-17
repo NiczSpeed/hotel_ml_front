@@ -1,52 +1,144 @@
 <template>
-  <h1>Strona logowania do aplikacji</h1>
-  <h2>Zaloguj się</h2>
+  <h2>Create Room</h2>
   <form @submit.prevent="submitForm">
-    <input type="text" v-model="form.email" id="email" name="email" required />
-    <label for="password">Password</label>
+    <label>number</label>
     <input
-      type="password"
-      v-model="form.password"
-      id="password"
-      name="password"
+      type="number"
+      v-model="form.number"
+      id="number"
+      name="number"
       required
     />
-    <button type="submit">Zaloguj się</button>
+    <label>number of beds</label>
+    <input
+      type="number"
+      v-model="form.numberOfBeds"
+      id="numberOfBeds"
+      name="numberOfBeds"
+      required
+      min="1"
+      max="3"
+    />
+    <label> status </label>
+    <select v-model="form.status" id="status" name="status">
+      <option value="OK" selected>OK</option>
+      <option value="TEMPORARILY_UNAVAILABLE">TEMPORARILY_UNAVAILABLE</option>
+    </select>
+    <label> Week Price </label>
+    <input
+      type="number"
+      v-model="form.weekPrice"
+      id="weekPrice"
+      name="weekPrice"
+      required
+    />
+    <label> Weekend Price </label>
+    <input
+      type="number"
+      v-model="form.weekendPrice"
+      id="weekendPrice"
+      name="weekendPrice"
+      required
+    />
+    <label> Description</label>
+    <input
+      type="text"
+      v-model="form.description"
+      id="description"
+      name="description"
+      required
+    />
+    <select v-model="selectedCity" @change="fetchHotels">
+      <option disabled value="">Choose City</option>
+      <option v-for="(option, index) in cities" :key="index" :value="option">
+        {{ option }}
+      </option>
+    </select>
+
+    <label>Choose hotel</label>
+    <select v-model="form.hotel" id="hotel" name="hotel">
+      <option disabled value="">Choose Hotel</option>
+       <option v-for="(option, index) in hotels" :key="index" :value="option">
+        {{ option }}
+      </option>
+    </select>
+
+    <button type="submit">Create New Hotel</button>
   </form>
   <router-link to="/">Home</router-link>
 </template>
 
 <script>
 import axios from "axios";
-import { isAdmin } from '../utils/authMethods'
-
 export default {
-  name: "LoginView",
+  name: "RegisterView",
   data() {
     return {
+      selectedCity: "",
+      cities: [],
+      hotels: [],
       form: {
-        email: "",
-        password: "",
+        number: "",
+        numberOfBeds: "",
+        status:"",
+        weekPrice: "",
+        weekendPrice: "",
+        description: "",
+        hotel: ""
       },
     };
   },
+  mounted() {
+    this.fetchCities();
+  },
   methods: {
+    async fetchCities() {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`http://localhost:8081/hotel/cities`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.cities = response.data.message;
+      } catch (error) {
+        window.alert("ewidentnie nie dziala!");
+      }
+    },
     async submitForm() {
       try {
+        const token = sessionStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:8081/user/login",
-          this.form
+          `http://localhost:8081/room/create`,
+          this.form,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+        this.data = response.data;
+
         if (response.status === 201) {
-          const token = response.data.message;
-          sessionStorage.setItem("token", token);
-
-          this.$isAdmin.value = isAdmin();
-          this.$isLogged.value = true;
+          window.alert("Registered with success!");
           this.$router.push("/");
-
-          // window.alert(response.data.message);
         }
+      } catch (error) {
+        window.alert(error.response.data);
+      }
+    },
+    async fetchHotels() {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(
+          `http://localhost:8081/hotel/all/${this.selectedCity}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        this.hotels = response.data.message;
       } catch (error) {
         window.alert(error.response.data.message);
       }

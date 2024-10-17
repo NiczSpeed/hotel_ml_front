@@ -30,6 +30,12 @@
     >
       Hotel
     </button>
+    <button
+      @click="gotToCreateRoomView"
+      style="height: 60px; width: 120px; color: brown"
+    >
+      Room
+    </button>
   </div>
 
   <div v-if="$isLogged.value">
@@ -80,6 +86,10 @@ export default {
       this.$router.push("/hotel/create");
       this.$router.forward();
     },
+    gotToCreateRoomView(){
+      this.$router.push("/room/create");
+      this.$router.forward();
+    },
     async logout() {
       try {
         const token = sessionStorage.getItem("token");
@@ -110,5 +120,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: #808080;
 }
 </style>
