@@ -6,6 +6,8 @@ import UserView from '../components/UserView.vue'
 import AdminView from '../components/AdminView.vue'
 import CreateHotelView from '../components/CreateHotelView.vue'
 import CreateRoomView from '../components/CreateRoomView.vue'
+import SearchFreeRoomsView from '../components/SearchFreeRoomsView.vue'
+import ReservationView from '../components/ReservationView.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
@@ -15,6 +17,8 @@ const routes = [
   { path: '/admin', name: 'Admin', component: AdminView},
   { path: '/hotel/create', name: 'CreateHotel', component: CreateHotelView},
   { path: '/room/create', name: 'CreateRoom', component: CreateRoomView},
+  { path: '/hotel/free', name: 'SearchFreeRooms', component: SearchFreeRoomsView},
+  { path: '/reservation/create', name: 'Reservation', component: ReservationView},
 ]
 
 const router = createRouter({

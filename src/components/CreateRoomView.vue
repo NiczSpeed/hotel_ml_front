@@ -20,7 +20,7 @@
       max="3"
     />
     <label> status </label>
-    <select v-model="form.status" id="status" name="status">
+    <select v-model="form.status" id="status" name="status" required>
       <option value="OK" selected>OK</option>
       <option value="TEMPORARILY_UNAVAILABLE">TEMPORARILY_UNAVAILABLE</option>
     </select>
@@ -48,7 +48,7 @@
       name="description"
       required
     />
-    <select v-model="selectedCity" @change="fetchHotels">
+    <select v-model="selectedCity" @change="fetchHotels" required>
       <option disabled value="">Choose City</option>
       <option v-for="(option, index) in cities" :key="index" :value="option">
         {{ option }}
@@ -56,7 +56,7 @@
     </select>
 
     <label>Choose hotel</label>
-    <select v-model="form.hotel" id="hotel" name="hotel">
+    <select v-model="form.hotel" id="hotel" name="hotel" required>
       <option disabled value="">Choose Hotel</option>
        <option v-for="(option, index) in hotels" :key="index" :value="option">
         {{ option }}
@@ -70,6 +70,8 @@
 
 <script>
 import axios from "axios";
+import {fetchCities} from '../utils/fetchHotelsMethods'
+
 export default {
   name: "RegisterView",
   data() {
@@ -88,23 +90,17 @@ export default {
       },
     };
   },
-  mounted() {
-    this.fetchCities();
+  async mounted() {
+    try{
+      this.cities = await fetchCities();
+      console.log(this.cities);
+    }catch (error){
+      console.error("There was an error with fetch list of cities! Error: ", error);
+      throw error;
+    }
+   
   },
   methods: {
-    async fetchCities() {
-      try {
-        const token = sessionStorage.getItem("token");
-        const response = await axios.get(`http://localhost:8081/hotel/cities`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        this.cities = response.data.message;
-      } catch (error) {
-        window.alert("ewidentnie nie dziala!");
-      }
-    },
     async submitForm() {
       try {
         const token = sessionStorage.getItem("token");

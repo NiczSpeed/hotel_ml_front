@@ -48,6 +48,9 @@
     <button @click="logout" style="height: 60px; width: 120px; color: brown">
       Logout
     </button>
+    <button @click="goToSearchFreeRoomsView" style="height: 60px; width: 120px; color: brown">
+      Search
+    </button>
   </div>
 
   <router-view></router-view>
@@ -86,8 +89,12 @@ export default {
       this.$router.push("/hotel/create");
       this.$router.forward();
     },
-    gotToCreateRoomView(){
+    gotToCreateRoomView() {
       this.$router.push("/room/create");
+      this.$router.forward();
+    },
+    goToSearchFreeRoomsView() {
+      this.$router.push("/hotel/free");
       this.$router.forward();
     },
     async logout() {
