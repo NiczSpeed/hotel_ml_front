@@ -27,6 +27,7 @@
     <label> Week Price </label>
     <input
       type="number"
+      step="0.01"
       v-model="form.weekPrice"
       id="weekPrice"
       name="weekPrice"
@@ -35,6 +36,7 @@
     <label> Weekend Price </label>
     <input
       type="number"
+      step="0.01"
       v-model="form.weekendPrice"
       id="weekendPrice"
       name="weekendPrice"

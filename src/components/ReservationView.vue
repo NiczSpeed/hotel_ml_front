@@ -6,6 +6,7 @@
   <h2>End Date: {{ this.form.endDate }}</h2>
   <h2>----------------------</h2>
   <h2>Room Number: {{ this.form.roomNumber }}</h2>
+  <h2>Price: {{ this.price }}</h2>
   <button
     @click="confirmReservation()"
     style="height: 60px; width: 120px; color: brown"
@@ -21,6 +22,7 @@ export default {
   name: "ReservationView",
   data() {
     return {
+      price: "",
       form: {
         hotelCity: "",
         hotelName: "",
@@ -41,10 +43,29 @@ export default {
     this.form.endDate = formData ? JSON.parse(formData).endDate : null;
     localStorage.clear;
   },
+  async mounted() {
+    await this.earnReservationPrice();
+  },
   methods: {
+    async earnReservationPrice() {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await axios.post(
+          "http://localhost:8081/reservation/price",
+          this.form,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        this.price = response.data.message;
+      } catch (error) {
+        window.alert("Something went wrong!");
+      }
+    },
     async confirmReservation() {
       try {
-        console.log(this.form);
         const token = sessionStorage.getItem("token");
         const response = await axios.post(
           "http://localhost:8081/reservation/create",
