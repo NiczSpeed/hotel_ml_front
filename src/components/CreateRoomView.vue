@@ -92,7 +92,7 @@ export default {
       },
     };
   },
-  async mounted() {
+  async created() {
     try{
       this.cities = await fetchCities();
       console.log(this.cities);

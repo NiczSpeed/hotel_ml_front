@@ -70,7 +70,7 @@ export default {
       },
     };
   },
-  async mounted() {
+  async created() {
     try {
       this.cities = await fetchCities();
     } catch (error) {
