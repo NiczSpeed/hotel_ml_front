@@ -61,7 +61,7 @@ export default {
         );
         this.price = response.data.message;
       } catch (error) {
-        window.alert("Something went wrong!");
+        window.alert(error.response.data.message);
       }
     },
     async confirmReservation() {

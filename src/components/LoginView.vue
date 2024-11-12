@@ -37,15 +37,14 @@ export default {
           "http://localhost:8081/user/login",
           this.form
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           const token = response.data.message;
+          console.log(response.data.message);
           sessionStorage.setItem("token", token);
 
           this.$isAdmin.value = isAdmin();
           this.$isLogged.value = true;
           this.$router.push("/");
-
-          // window.alert(response.data.message);
         }
       } catch (error) {
         window.alert(error.response.data.message);

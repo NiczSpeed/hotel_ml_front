@@ -23,6 +23,14 @@
       name="endDate"
       required
     />
+    <label>Number of guests</label>
+    <input
+      type="number"
+      v-model="form.numberOfBeds"
+      id="numberOfBeds"
+      name="numberOfBeds"
+      required
+    />
     <button type="submit">Search</button>
   </form>
   <div v-if="!isLoading" calss="hotels">
@@ -67,6 +75,7 @@ export default {
         city: "",
         startDate: "",
         endDate: "",
+        numberOfBeds: ""
       },
     };
   },
@@ -93,7 +102,7 @@ export default {
       try {
         const token = sessionStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:8081/hotel/free/${this.form.city}/${this.form.startDate}/${this.form.endDate}`,
+          `http://localhost:8081/hotel/free/${this.form.city}/${this.form.startDate}/${this.form.endDate}/${this.form.numberOfBeds}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -108,7 +117,7 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error.response.data);
+        window.alert(error.response.data.message);
       }
     },
   },
