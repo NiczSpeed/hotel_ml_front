@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../utils/axiosInterceptor";
 import { isAdmin } from '../utils/authMethods'
 
 export default {
@@ -33,8 +33,8 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post(
-          "http://localhost:8081/user/login",
+        const response = await api.post(
+          "/user/login",
           this.form
         );
         if (response.status === 200) {
@@ -47,7 +47,7 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error.response.data.message);
+        window.alert(error);
       }
     },
   },

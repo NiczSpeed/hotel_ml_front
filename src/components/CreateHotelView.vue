@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../utils/axiosInterceptor";
 
 export default {
   name: "RegisterView",
@@ -62,8 +62,8 @@ export default {
     async submitForm() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.post(
-          "http://localhost:8081/hotel/create",
+        const response = await api.post(
+          "/hotel/create",
           this.form,
           {
             headers: {

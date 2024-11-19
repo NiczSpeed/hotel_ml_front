@@ -1,9 +1,9 @@
-import axios from 'axios';
+import api from "./axiosInterceptor";
 
 export async function fetchCities() {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await axios.get(`http://localhost:8081/hotel/cities`, {
+      const response = await api.get(`/hotel/cities`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

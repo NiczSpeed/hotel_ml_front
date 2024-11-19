@@ -33,7 +33,7 @@
     />
     <button type="submit">Search</button>
   </form>
-  <div v-if="!isLoading" calss="hotels">
+  <div v-if="!isLoading" class="hotels">
     <div v-for="(hotel, index) in hotels" :key="index" :value="hotel">
       <h2>Hotel name : {{ hotel.name }}</h2>
       <h2>Number of stars : {{ hotel.numberOfStars }}</h2>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../utils/axiosInterceptor";
 import { fetchCities } from "../utils/fetchHotelsMethods";
 
 export default {
@@ -101,8 +101,8 @@ export default {
     async submitForm() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:8081/hotel/free/${this.form.city}/${this.form.startDate}/${this.form.endDate}/${this.form.numberOfBeds}`,
+        const response = await api.get(
+          `/hotel/free/${this.form.city}/${this.form.startDate}/${this.form.endDate}/${this.form.numberOfBeds}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -117,7 +117,7 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error.response.data.message);
+        window.alert(error);
       }
     },
   },

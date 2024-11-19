@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../utils/axiosInterceptor";
 
 export default {
   name: "RegisterView",
@@ -52,8 +52,8 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post(
-          "http://localhost:8081/user/register",
+        const response = await api.post(
+          "/user/register",
           this.form
         );
         if (response.status === 201) {
@@ -61,7 +61,7 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error.response.data.message);
+        window.alert(error);
       }
     },
   },

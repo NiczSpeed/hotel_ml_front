@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../utils/axiosInterceptor";
 
 export default {
   name: "ReservationView",
@@ -50,8 +50,8 @@ export default {
     async earnReservationPrice() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.post(
-          "http://localhost:8081/reservation/price",
+        const response = await api.post(
+          "/reservation/price",
           this.form,
           {
             headers: {
@@ -61,14 +61,14 @@ export default {
         );
         this.price = response.data.message;
       } catch (error) {
-        window.alert(error.response.data.message);
+        window.alert(error);
       }
     },
     async confirmReservation() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.post(
-          "http://localhost:8081/reservation/create",
+        const response = await api.post(
+          "/reservation/create",
           this.form,
           {
             headers: {

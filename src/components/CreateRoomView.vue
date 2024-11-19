@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "../utils/axiosInterceptor";
 import {fetchCities} from '../utils/fetchHotelsMethods'
 
 export default {
@@ -95,7 +95,6 @@ export default {
   async created() {
     try{
       this.cities = await fetchCities();
-      console.log(this.cities);
     }catch (error){
       console.error("There was an error with fetch list of cities! Error: ", error);
       throw error;
@@ -106,8 +105,8 @@ export default {
     async submitForm() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.post(
-          `http://localhost:8081/room/create`,
+        const response = await api.post(
+          `/room/create`,
           this.form,
           {
             headers: {
@@ -128,8 +127,8 @@ export default {
     async fetchHotels() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:8081/hotel/all/${this.selectedCity}`,
+        const response = await api.get(
+          `/hotel/all/${this.selectedCity}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

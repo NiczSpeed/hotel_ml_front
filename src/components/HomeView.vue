@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <h1>Witaj</h1>
   <h1>{{ data }}</h1>
 </template>
@@ -30,4 +30,4 @@ export default {
 </script>
 
 <style>
-</style>
+</style> -->

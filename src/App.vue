@@ -1,63 +1,58 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <br />
-  <!-- <strong>Current route path:</strong> {{ $route.fullPath }} -->
-  <div v-if="!$isLogged.value">
-    <button
-      @click="goToLoginView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Login
-    </button>
-    <button
-      @click="goToRegisterView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Register
-    </button>
+  <div class="body d-flex justify-content-center align-items-center vh-100">
+    <div class="main-box shadow p-4">
+      <div class="container">
+        <header v-if="$isAdmin.value" class="admin-header d-flex justify-content-center py-3">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" @click="setActiveNav($event); goBackToHome()" aria-current="page">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="setActiveNav($event); goToAdminView()">Admin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="setActiveNav($event); goToUserView()">User</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="setActiveNav($event); gotToCreateHotelView()">Hotel</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="setActiveNav($event); gotToCreateRoomView()">Room</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="logout">Logout</a>
+            </li>
+          </ul>
+        </header>
+        <header v-if="$isLogged.value && !$isAdmin.value" class="user-header d-flex justify-content-center py-3">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" @click="goBackToHome" aria-current="page">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="goToUserView">User</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" @click="logout">Logout</a>
+            </li>
+          </ul>
+        </header>
+      </div>
+      <h1 class="main-text text-center">Hotel ML</h1>
+      <p v-if="!$isLogged.value" class="welcome-text text-center">Welcome in our application</p>
+      <div v-if="!$isLogged.value" class=" buttons d-flex gap-3 justify-content-center align-items-center">
+        <button type="button" @click="goToLoginView" class="login-button btn btn-secondary col-2">Sing In</button>
+        <button type="button" @click="goToRegisterView" class="register-button btn btn-secondary col-2">Sign Up</button>
+      </div>
+      <router-view></router-view>
+    </div>
   </div>
 
-  <div v-if="$isAdmin.value">
-    <button
-      @click="goToAdminView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Admin
-    </button>
-    <button
-      @click="gotToCreateHotelView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Hotel
-    </button>
-    <button
-      @click="gotToCreateRoomView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Room
-    </button>
-  </div>
-
-  <div v-if="$isLogged.value">
-    <button
-      @click="goToUserView"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      User
-    </button>
-    <button @click="logout" style="height: 60px; width: 120px; color: brown">
-      Logout
-    </button>
-    <button @click="goToSearchFreeRoomsView" style="height: 60px; width: 120px; color: brown">
-      Search
-    </button>
-  </div>
-
-  <router-view></router-view>
 </template>
 
 <script>
-import axios from "axios";
+import api from "./utils/axiosInterceptor";
+
 import { isAdmin } from "./utils/authMethods";
 export default {
   name: "App",
@@ -68,9 +63,12 @@ export default {
     }
   },
   methods: {
+    goBackToHome() {
+      this.$router.push("/");
+      this.$router.forward();
+    },
     goToLoginView() {
       this.$router.push("/login");
-      // this.$router.back();
       this.$router.forward();
     },
     goToRegisterView() {
@@ -97,10 +95,15 @@ export default {
       this.$router.push("/hotel/free");
       this.$router.forward();
     },
+    setActiveNav(event) {
+      const element = event.target;
+      document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active') });
+      element.classList.add('active');
+    },
     async logout() {
       try {
         const token = sessionStorage.getItem("token");
-        const response = await axios.get("http://localhost:8081/user/logout", {
+        const response = await api.get("/user/logout", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -120,13 +123,64 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  background-color: #808080;
+.body {
+  background: linear-gradient(60deg, #232526, #414345);
+}
+
+.main-text {
+  color: #232526;
+  margin-top: 3%;
+  font-size: 8rem;
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: bold;
+  text-shadow: 1px 1.5px 2px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-text {
+  color: #232526;
+  font-size: 4rem;
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-style: italic;
+}
+
+.main-box {
+  background-color: #339751;
+  border-radius: 60px;
+  max-width: 60%;
+  width: 70%;
+  max-height: 90%;
+  height: 60%;
+}
+
+.buttons {
+  height: 30%;
+}
+
+.login-button,
+.register-button {
+  height: 30%;
+}
+
+.admin-header,
+user-header {
+  border-bottom: 1px solid #0f0f0f;
+}
+
+.nav-link {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.nav-link.active {
+  background-color: #F5F5F5 !important;
+  color: black !important;
+  border-radius: 5px;
+  font-style: italic;
+}
+
+.nav-link:hover {
+  color: rgb(145, 12, 223);
 }
 </style>
