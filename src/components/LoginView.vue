@@ -1,7 +1,5 @@
 <template>
-  <h1>Strona logowania do aplikacji</h1>
-  <h2>Zaloguj się</h2>
-  <form @submit.prevent="submitForm">
+  <!-- <form @submit.prevent="submitForm">
     <input type="text" v-model="form.email" id="email" name="email" required />
     <label for="password">Password</label>
     <input
@@ -12,8 +10,22 @@
       required
     />
     <button type="submit">Zaloguj się</button>
-  </form>
-  <router-link to="/">Home</router-link>
+  </form> -->
+  <div class="d-flex justify-content-center align-items-center w-100 ">
+      <form class="form" @submit.prevent="submitForm">
+        <div class="form-floating mb-3">
+          <input v-model="form.email" type="email" class="form-control w-100" id="floatingEmail" placeholder="Email address">
+          <label for="floatingEmail">Email address</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input v-model="form.password" type="password" class="form-control w-100" id="floatingPassword"
+            placeholder="Password">
+          <label for="floatingEmail">Password</label>
+        </div>
+        <button type="submit" class="btn btn-secondary w-100">Submit</button>
+      </form>
+  </div>
+
 </template>
 
 <script>
@@ -55,4 +67,17 @@ export default {
 </script>
 
 <style>
+.form {
+  width: 34.4%;
+}
+
+.form-control {
+  background-color: #ececec;
+  border-color: #ced4da;
+}
+
+.form-control:focus {
+  background-color: #f1f1f1;
+  border-color: #80bdff;
+}
 </style>
