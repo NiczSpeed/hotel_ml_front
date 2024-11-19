@@ -1,7 +1,5 @@
 <template>
-  <h1>Strona rejestracji do aplikacji</h1>
-  <h2>Stwórz konto</h2>
-  <form @submit.prevent="submitForm">
+  <!-- <form @submit.prevent="submitForm">
     <label for="emaile">Email</label>
     <input type="text" v-model="form.email" id="email" name="email" required />
     <label for="password">Password</label>
@@ -29,8 +27,35 @@
       required
     />
     <button type="submit">Zarejestruj się</button>
-  </form>
-  <router-link to="/">Home</router-link>
+  </form> -->
+
+  <div class="d-flex justify-content-center ">
+    <form class="form" @submit.prevent="submitForm">
+      <div class="row g-3">
+        <div class="form-floating mb-3 col-md-6">
+          <input v-model="form.email" type="email" class="form-control w-100" id="floatingEmail"
+            placeholder="Email address" required>
+          <label class="ps-4" for="floatingEmail">Email address</label>
+        </div>
+        <div class="form-floating mb-3 col-md-6">
+          <input v-model="form.password" type="password" class="form-control w-100" id="floatingPassword"
+            placeholder="Password" required>
+          <label class="ps-4" for="floatingPassword">Password</label>
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input v-model="form.name" type="text" class="form-control w-100" id="floatingName" placeholder="Name" required>
+        <label class="ps-3" for="floatingEmail">Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input v-model="form.lastName" type="text" class="form-control w-100" id="floatingLastName"
+          placeholder="Last name" required>
+        <label class="ps-3" for="floatingLastName">Last name</label>
+      </div>
+      <button type="submit" class="btn btn-secondary w-100">Submit</button>
+    </form>
+  </div>
+
 </template>
 
 <script>
@@ -68,5 +93,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

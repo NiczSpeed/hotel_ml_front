@@ -155,8 +155,9 @@ export default {
 }
 
 .buttons {
-  height: 25%;
-  margin-bottom: auto;
+  margin-top: 5%;
+
+  margin-bottom: 2rem;
 }
 
 .login-button,

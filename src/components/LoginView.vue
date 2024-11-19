@@ -14,12 +14,12 @@
   <div class="d-flex justify-content-center align-items-center w-100 ">
       <form class="form" @submit.prevent="submitForm">
         <div class="form-floating mb-3">
-          <input v-model="form.email" type="email" class="form-control w-100" id="floatingEmail" placeholder="Email address">
+          <input v-model="form.email" type="email" class="form-control w-100" id="floatingEmail" placeholder="Email address" required>
           <label for="floatingEmail">Email address</label>
         </div>
         <div class="form-floating mb-3">
           <input v-model="form.password" type="password" class="form-control w-100" id="floatingPassword"
-            placeholder="Password">
+            placeholder="Password" required>
           <label for="floatingEmail">Password</label>
         </div>
         <button type="submit" class="btn btn-secondary w-100">Submit</button>
