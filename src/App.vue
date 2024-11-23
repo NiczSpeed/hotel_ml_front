@@ -44,7 +44,7 @@
         <button type="button" @click="goToLoginView" class="login-button btn btn-secondary col-2">Sing In</button>
         <button type="button" @click="goToRegisterView" class="register-button btn btn-secondary col-2">Sign Up</button>
       </div>
-      <router-view></router-view>
+      <router-view class="routerView"></router-view>
     </div>
   </div>
 
@@ -124,6 +124,7 @@ export default {
 
 <style>
 .body {
+  height: 100%;
   background: linear-gradient(60deg, #232526, #414345);
 }
 
@@ -151,7 +152,7 @@ export default {
   max-width: 60%;
   width: 70%;
   max-height: 90%;
-  height: 60%;
+  height: 70%;
 }
 
 .buttons {
@@ -184,5 +185,9 @@ user-header {
 
 .nav-link:hover {
   color: rgb(145, 12, 223);
+}
+
+.routerView {
+  height: 30%;
 }
 </style>

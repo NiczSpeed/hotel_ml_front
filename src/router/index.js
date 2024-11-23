@@ -17,7 +17,7 @@ const routes = [
   { path: '/admin', name: 'Admin', component: AdminView},
   { path: '/hotel/create', name: 'CreateHotel', component: CreateHotelView},
   { path: '/room/create', name: 'CreateRoom', component: CreateRoomView},
-  { path: '/hotel/free', name: 'SearchFreeRooms', component: SearchFreeRoomsView},
+  { path: '/', name: 'SearchFreeRooms', component: SearchFreeRoomsView},
   { path: '/reservation/create', name: 'Reservation', component: ReservationView},
 ]
 

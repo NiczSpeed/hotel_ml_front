@@ -1,63 +1,69 @@
 <template>
-  <h2>Search Free Rooms</h2>
-  <form @submit.prevent="submitForm">
-    <select v-model="form.city" @change="fetchHotels" required>
+  <form v-if="$isLogged.value" @submit.prevent="submitForm">
+    <div class="row g-3"></div>
+    <select v-model="form.city" @change="fetchHotels" id="citySelect" class="form-select" required>
       <option disabled value="">Choose City</option>
       <option v-for="(option, index) in cities" :key="index" :value="option">
         {{ option }}
       </option>
     </select>
-    <label>Start Date</label>
-    <input
-      type="date"
-      v-model="form.startDate"
-      id="startDate"
-      name="startDate"
-      required
-    />
-    <label>End Date</label>
-    <input
-      type="date"
-      v-model="form.endDate"
-      id="endDate"
-      name="endDate"
-      required
-    />
-    <label>Number of guests</label>
-    <input
-      type="number"
-      v-model="form.numberOfBeds"
-      id="numberOfBeds"
-      name="numberOfBeds"
-      required
-    />
-    <button type="submit">Search</button>
+    <div class="mb-3">
+      <label for="startDate">Start</label>
+      <input v-model="form.startDate" id="startDate" class="form-control" type="date" required />
+    </div>
+    <div class="mb-3">
+      <label for="startDate">Start</label>
+      <input v-model="form.endDate" id="startDate" class="form-control" type="date" required />
+    </div>
+    <div class="mb-3">
+      <div class="form-floating mb-3 col-md-6">
+        <input type="number" v-model="form.numberOfBeds" id="numberOfBeds" name="numberOfBeds"
+          class="form-control w-100" placeholder="Email address" required>
+        <label class="ps-4" for="floatingEmail">Number of guests</label>
+      </div>
+      <button type="submit">Search</button>
+    </div>
+
   </form>
-  <div v-if="!isLoading" class="hotels">
-    <div v-for="(hotel, index) in hotels" :key="index" :value="hotel">
-      <h2>Hotel name : {{ hotel.name }}</h2>
-      <h2>Number of stars : {{ hotel.numberOfStars }}</h2>
-      <h2>Contact : {{ hotel.contact }}</h2>
-      <div class="rooms">
-        <div
-          v-for="(room, roomIndex) in hotel.rooms"
-          :key="roomIndex"
-          :value="room"
-        >
-          <h3>Room number: {{ room.number }}</h3>
-          <h3>Number of Beds: {{ room.numberOfBeds }}</h3>
-          <h3>Week price : {{ room.weekPrice }}</h3>
-          <h3>Weekend price : {{ room.weekendPrice }}</h3>
-          <button
-            @click="goToReservationView(hotel, room)"
-            style="height: 60px; width: 120px; color: brown"
-          >
-            Create reservation
+
+
+  <div class="container my-4">
+    <div class="accordion">
+      <div class="accordion-item" id="acordionItem" v-for="(hotel, hotelIndex) in hotels" :key="hotelIndex">
+        <h2 class="accordion-header" :id="'heading-' + hotelIndex">
+          <button class="accordion-button" type="button" :class="{ collapsed: !openedAcordeaon[hotelIndex] }"
+            @click="toggleAkordeon(hotelIndex)" >
+            {{ hotel.name }} - {{ hotel.numberOfStars }}, {{ hotel.address }}
           </button>
+        </h2>
+        <div class="accordion-collapse collapse"
+          :class="{ show: openedAcordeaon[hotelIndex] }">
+          <div class="accordion-body">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Room number</th>
+                  <th scope="col">Week Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(room, roomIndex) in hotel.rooms" :key="roomIndex" :value="room">
+                  <td>{{ room.number }}</td>
+                  <td>{{ room.weekPrice }}</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm" @click="goToReservationView(hotel, room)">
+                      Reserve
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -68,6 +74,7 @@ export default {
   name: "SearchFreeRoomsView",
   data() {
     return {
+      openedAcordeaon: [],
       cities: [],
       hotels: [],
       isLoading: true,
@@ -81,7 +88,8 @@ export default {
   },
   async created() {
     try {
-      this.cities = await fetchCities();
+      if (this.$isLogged.value) { this.cities = await fetchCities(); }
+
     } catch (error) {
       console.error(
         "There was an error with fetch list of cities! Error: ",
@@ -91,6 +99,10 @@ export default {
     }
   },
   methods: {
+    toggleAkordeon(index) {
+      if (this.openedAcordeaon[index]) this.openedAcordeaon[index] = false;
+      else this.openedAcordeaon = this.openedAcordeaon.map((_, i) => i === index);
+    },
     goToReservationView(hotel, room) {
       localStorage.setItem("hotel", JSON.stringify(hotel));
       localStorage.setItem("room", JSON.stringify(room));
@@ -110,6 +122,7 @@ export default {
           }
         );
         this.hotels = response.data.message;
+        this.openedAcordeaon = this.hotels.map(() => false)
         this.isLoading = false;
 
         if (response.status === 201) {
@@ -125,4 +138,13 @@ export default {
 </script>
 
 <style>
+.accordion {
+  max-height: 10px; /* Maksymalna wysokość całego akordeonu */
+  overflow-y: auto; /* Pionowe przewijanie, jeśli sekcje przekraczają maksymalną wysokość */
+}
+
+.accordion-body {
+  max-height: 100px; /* Ograniczenie wysokości rozwijanej sekcji */
+  overflow-y: auto; /* Dodaj przewijanie do długiej treści */
+}
 </style>

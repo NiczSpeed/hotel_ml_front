@@ -10,6 +10,6 @@ export async function fetchCities() {
       });
       return response.data.message;
     } catch (error) {
-      window.alert(error.response.data.message);
+      window.alert(error);
     }
   }
