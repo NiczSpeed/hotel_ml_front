@@ -6,11 +6,11 @@
           <label for="floatingEmail">Email address</label>
         </div>
         <div class="form-floating mb-3">
-          <input v-model="form.password" type="password" class="form-control " id="floatingPassword"
+          <input v-model="form.password" type="password" class="form-control" id="floatingPassword"
             placeholder="Password" required>
           <label for="floatingEmail">Password</label>
         </div>
-        <button type="submit" class="btn btn-secondary ">Submit</button>
+        <button type="submit" class="btn btn-secondary w-100">Submit</button>
       </form>
   </div>
 

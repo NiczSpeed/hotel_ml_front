@@ -1,43 +1,32 @@
 <template>
-  <h2>Create Hotel</h2>
-  <form @submit.prevent="submitForm">
-    <label>name</label>
-    <input type="text" v-model="form.name" id="name" name="name" required />
-    <label>address</label>
-    <input
-      type="text"
-      v-model="form.address"
-      id="address"
-      name="address"
-      required
-    />
-    <label>city</label>
-    <input type="text" v-model="form.city" id="city" name="city" required />
-    <label> State </label>
-    <input type="text" v-model="form.state" id="state" name="state" required />
-    <label> number of Stars </label>
-    <input
-      type="number"
-      v-model="form.numberOfStars"
-      id="numberOfStars"
-      name="numberOfStars"
-      required
-      min="1"
-      max="5"
-    />
-    <label> contact number </label>
-    <input
-      type="tel"
-      v-model="form.contact"
-      id="contact"
-      name="contact"
-      placeholder="123456789"
-      pattern="[0-9]{9}"
-      required
-    />
-    <button type="submit">Create New Hotel</button>
-  </form>
-  <router-link to="/">Home</router-link>
+  <div class="d-flex justify-content-center ">
+    <form class="form" @submit.prevent="submitForm">
+      <div class="row g-3">
+        <div class="form-floating mb-3 col-md-6">
+          <input type="text" class="form-control w-100" id="floatingEmail" placeholder="Name" required
+            v-model="form.name" />
+          <label class="ps-4" for="floatingEmail">name</label>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="form-floating mb-3 col-md-6">
+          <input type="text" class="form-control w-100" id="floatingEmail" placeholder="Name" required v-model="form.address"/>
+          <label class="ps-4" for="floatingEmail">address</label>
+        </div>
+      </div>
+      <label>city</label>
+      <input type="text" v-model="form.city" id="city" name="city" required />
+      <label> State </label>
+      <input type="text" v-model="form.state" id="state" name="state" required />
+      <label> number of Stars </label>
+      <input type="number" v-model="form.numberOfStars" id="numberOfStars" name="numberOfStars" required min="1"
+        max="5" />
+      <label> contact number </label>
+      <input type="tel" v-model="form.contact" id="contact" name="contact" placeholder="123456789" pattern="[0-9]{9}"
+        required />
+      <button type="submit">Create New Hotel</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -85,5 +74,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

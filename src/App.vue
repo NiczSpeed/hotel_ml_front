@@ -1,7 +1,7 @@
 <template>
   <div class="body d-flex justify-content-center align-items-center vh-100">
-    <div class="main-box shadow p-4">
-      <div class="container">
+    <div class="main-box shadow ">
+      <div class="headers flex-grow-2">
         <header v-if="$isAdmin.value" class="admin-header d-flex justify-content-center py-3">
           <ul class="nav nav-pills">
             <li class="nav-item">
@@ -38,13 +38,16 @@
           </ul>
         </header>
       </div>
-      <h1 class="main-text text-center">Hotel ML</h1>
-      <p v-if="!$isLogged.value" class="welcome-text text-center">Welcome in our application</p>
-      <div v-if="!$isLogged.value" class=" buttons d-flex gap-3 justify-content-center align-items-center">
-        <button type="button" @click="goToLoginView" class="login-button btn btn-secondary col-2">Sing In</button>
-        <button type="button" @click="goToRegisterView" class="register-button btn btn-secondary col-2">Sign Up</button>
+      <div class="container flex-grow-5">
+        <h1 class="main-text text-center">Hotel ML</h1>
+        <p v-if="!$isLogged.value" class="welcome-text text-center">Welcome in our application</p>
+        <div v-if="!$isLogged.value" class=" buttons d-flex gap-3 justify-content-center align-items-center">
+          <button type="button" @click="goToLoginView" class="login-button btn btn-secondary col-2">Sing In</button>
+          <button type="button" @click="goToRegisterView" class="register-button btn btn-secondary col-2">Sign
+            Up</button>
+        </div>
       </div>
-      <router-view class="routerView"></router-view>
+      <router-view class="routerView flex-grow-"></router-view>
     </div>
   </div>
 
@@ -124,7 +127,6 @@ export default {
 
 <style>
 .body {
-  height: 100%;
   background: linear-gradient(60deg, #232526, #414345);
 }
 
@@ -161,10 +163,7 @@ export default {
   margin-bottom: 2rem;
 }
 
-.login-button,
-.register-button {
-  height: 30%;
-}
+
 
 .admin-header,
 user-header {

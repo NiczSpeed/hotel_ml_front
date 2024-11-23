@@ -1,30 +1,37 @@
 <template>
-  <form v-if="$isLogged.value" @submit.prevent="submitForm">
-    <div class="row g-3"></div>
-    <select v-model="form.city" @change="fetchHotels" id="citySelect" class="form-select" required>
-      <option disabled value="">Choose City</option>
-      <option v-for="(option, index) in cities" :key="index" :value="option">
-        {{ option }}
-      </option>
-    </select>
-    <div class="mb-3">
-      <label for="startDate">Start</label>
-      <input v-model="form.startDate" id="startDate" class="form-control" type="date" required />
-    </div>
-    <div class="mb-3">
-      <label for="startDate">Start</label>
-      <input v-model="form.endDate" id="startDate" class="form-control" type="date" required />
-    </div>
-    <div class="mb-3">
-      <div class="form-floating mb-3 col-md-6">
-        <input type="number" v-model="form.numberOfBeds" id="numberOfBeds" name="numberOfBeds"
-          class="form-control w-100" placeholder="Email address" required>
-        <label class="ps-4" for="floatingEmail">Number of guests</label>
-      </div>
-      <button type="submit">Search</button>
-    </div>
 
-  </form>
+  <div class=" d-flex justify-content-center ">
+    <form class="form" v-if="$isLogged.value" @submit.prevent="submitForm">
+      <div class="row g-3">
+        <div class="form-floating mb-3 col-md-6 ">
+          <select v-model="form.city" @change="fetchHotels" id="citySelect" class="form-select " required>
+            <option disabled value="">Choose City</option>
+            <option v-for="(option, index) in cities" :key="index" :value="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+        <div class="form-floating mb-3 col-md-6">
+          <input type="number" v-model="form.numberOfBeds" id="numberOfBeds" name="numberOfBeds" class="form-control"
+            placeholder="Email address" min="1" required>
+          <label class="ps-4" for="floatingEmail">Number of guests</label>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="form-floating mb-3 col-md-6">
+          <input v-model="form.startDate" id="startDate" class="form-control" placeholder="Start date" type="date"
+            required />
+          <label class="ps-4" for="floatingStartDate">Start date</label>
+        </div>
+        <div class="form-floating mb-3 col-md-6">
+          <input v-model="form.endDate" id="startDate" class="form-control" placeholder="End date" type="date"
+            required />
+          <label class="ps-4" for="floatingEndDate">End date</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-secondary w-100">Search</button>
+    </form>
+  </div>
 
 
   <div class="container my-4">
@@ -32,26 +39,44 @@
       <div class="accordion-item" id="acordionItem" v-for="(hotel, hotelIndex) in hotels" :key="hotelIndex">
         <h2 class="accordion-header" :id="'heading-' + hotelIndex">
           <button class="accordion-button" type="button" :class="{ collapsed: !openedAcordeaon[hotelIndex] }"
-            @click="toggleAkordeon(hotelIndex)" >
-            {{ hotel.name }} - {{ hotel.numberOfStars }}, {{ hotel.address }}
+            @click="toggleAkordeon(hotelIndex)">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Hotel name</th>
+                  <th scope="col">Number of stars</th>
+                  <th scope="col">Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <td>{{ hotelIndex + 1 }}</td>
+                <td>{{ hotel.name }}</td>
+                <td>{{ hotel.numberOfStars }}</td>
+                <td>{{ hotel.contact }}</td>
+              </tbody>
+            </table>
           </button>
         </h2>
-        <div class="accordion-collapse collapse"
-          :class="{ show: openedAcordeaon[hotelIndex] }">
+        <div class="accordion-collapse collapse" :class="{ show: openedAcordeaon[hotelIndex] }">
           <div class="accordion-body">
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
                   <th scope="col">Room number</th>
                   <th scope="col">Week Price</th>
+                  <th scope="col">Weekend Price</th>
+                  <th scope="col">Description</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(room, roomIndex) in hotel.rooms" :key="roomIndex" :value="room">
                   <td>{{ room.number }}</td>
                   <td>{{ room.weekPrice }}</td>
+                  <td>{{ room.weekendPrice }}</td>
+                  <td>{{ room.description}}</td>
                   <td>
-                    <button class="btn btn-danger btn-sm" @click="goToReservationView(hotel, room)">
+                    <button class="btn btn-success" @click="goToReservationView(hotel, room)">
                       Reserve
                     </button>
                   </td>
@@ -139,12 +164,12 @@ export default {
 
 <style>
 .accordion {
-  max-height: 10px; /* Maksymalna wysokość całego akordeonu */
-  overflow-y: auto; /* Pionowe przewijanie, jeśli sekcje przekraczają maksymalną wysokość */
+  max-height: 20vh;
+  overflow-y: auto;
 }
 
 .accordion-body {
-  max-height: 100px; /* Ograniczenie wysokości rozwijanej sekcji */
-  overflow-y: auto; /* Dodaj przewijanie do długiej treści */
+  max-height: 10vh;
+  overflow-y: auto;
 }
 </style>
