@@ -183,7 +183,7 @@ user-header {
 }
 
 .nav-link:hover {
-  color: rgb(145, 12, 223);
+  color: rgb(215, 210, 218);
 }
 
 .routerView {

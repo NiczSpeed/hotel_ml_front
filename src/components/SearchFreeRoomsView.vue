@@ -74,9 +74,10 @@
                   <td>{{ room.number }}</td>
                   <td>{{ room.weekPrice }}</td>
                   <td>{{ room.weekendPrice }}</td>
-                  <td>{{ room.description}}</td>
+                  <td>{{ room.description }}</td>
                   <td>
-                    <button class="btn btn-success" @click="goToReservationView(hotel, room)">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                      @click="earnReservationPrice(hotel.name, room.number)" data-bs-target="#exampleModal">
                       Reserve
                     </button>
                   </td>
@@ -84,6 +85,33 @@
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm your reservation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li class="list-group-item"><strong>Hotel city: </strong>{{ this.reservationPriceForm.hotelCity }}</li>
+            <li class="list-group-item"><strong>Hotel Name: </strong>{{ this.reservationPriceForm.hotelName }}</li>
+            <li class="list-group-item"><strong>Start Date: </strong>{{ this.reservationPriceForm.startDate }}</li>
+            <li class="list-group-item"><strong>End Date: </strong>{{ this.reservationPriceForm.endDate }}</li>
+            <hr class="my-3">
+            <li class="list-group-item"><strong>Room Number: </strong>{{ this.reservationPriceForm.roomNumber }}</li>
+            <li class="list-group-item"><strong>Price: </strong>{{ this.price }}</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-outline-success" @click="confirmReservation()" data-bs-dismiss="modal">Confirm
+          </button>
         </div>
       </div>
     </div>
@@ -103,11 +131,19 @@ export default {
       cities: [],
       hotels: [],
       isLoading: true,
+      price: "",
       form: {
         city: "",
         startDate: "",
         endDate: "",
         numberOfBeds: ""
+      },
+      reservationPriceForm: {
+        hotelCity: "",
+        hotelName: "",
+        roomNumber: "",
+        startDate: "",
+        endDate: "",
       },
     };
   },
@@ -127,6 +163,13 @@ export default {
     toggleAkordeon(index) {
       if (this.openedAcordeaon[index]) this.openedAcordeaon[index] = false;
       else this.openedAcordeaon = this.openedAcordeaon.map((_, i) => i === index);
+    },
+    copyFormsData(hotelName, roomNumber) {
+      this.reservationPriceForm.hotelName = hotelName;
+      this.reservationPriceForm.roomNumber = roomNumber;
+      this.reservationPriceForm.hotelCity = this.form.city;
+      this.reservationPriceForm.startDate = this.form.startDate;
+      this.reservationPriceForm.endDate = this.form.endDate;
     },
     goToReservationView(hotel, room) {
       localStorage.setItem("hotel", JSON.stringify(hotel));
@@ -158,18 +201,64 @@ export default {
         window.alert(error);
       }
     },
+    async earnReservationPrice(hotelName, roomNumber) {
+      try {
+        this.copyFormsData(hotelName, roomNumber)
+        const token = sessionStorage.getItem("token");
+        const response = await api.post(
+          "/reservation/price",
+          this.reservationPriceForm,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        this.price = response.data.message;
+      } catch (error) {
+        window.alert(error);
+      }
+    },
+    async confirmReservation() {
+      try {
+        const token = sessionStorage.getItem("token");
+        const response = await api.post(
+          "/reservation/create",
+          this.reservationPriceForm,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        this.data = response.data;
+
+        if (response.status === 201) {
+          window.alert("Registered with success!");
+          this.$router.push("/");
+        }
+      } catch (error) {
+        window.alert(error.response.data.message);
+      }
+    },
   },
 };
 </script>
 
 <style>
 .accordion {
-  max-height: 20vh;
+  max-height: 25vh;
   overflow-y: auto;
 }
 
 .accordion-body {
-  max-height: 10vh;
+  max-height: 15vh;
   overflow-y: auto;
 }
+
+.accordion-button:not(.collapsed) {
+  background-color: gray;
+  color: white;
+}
+
 </style>
