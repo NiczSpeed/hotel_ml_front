@@ -1,12 +1,9 @@
 <template>
-  <h1>{{ data }}</h1>
-
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button>
-
-  <!-- Modal -->
+  <div class="d-flex justify-content-center ">
+    <button type="button" class="btn btn-secondary w-50" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Grant admin
+    </button>
+  </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -26,10 +23,12 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-outline-success" form="submitForm" data-bs-dismiss="modal">Save changes</button>
+          <button type="submit" class="btn btn-outline-success" form="submitForm" data-bs-dismiss="modal">Save
+            changes</button>
         </div>
       </div>
     </div>
+
   </div>
 
 

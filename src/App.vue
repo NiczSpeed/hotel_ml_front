@@ -1,9 +1,9 @@
 <template>
-  <div class="body d-flex justify-content-center align-items-center vh-100">
-    <div class="main-box shadow ">
-      <div class="headers flex-grow-2">
-        <header v-if="$isAdmin.value" class="admin-header d-flex justify-content-center py-3">
-          <ul class="nav nav-pills">
+  <div class="body d-flex justify-content-center align-items-center vh-100 vw-100">
+    <div class="main-box d-flex flex-column shadow h-75 w-50">
+      <div class="headers flex-grow-2 d-flex align-items-center justify-content-center">
+        <header v-if="$isAdmin.value" class="admin-header py-3">
+          <ul class="nav nav-pills d-flex align-items-center justify-content-center">
             <li class="nav-item">
               <a class="nav-link" @click="setActiveNav($event); goBackToHome()" aria-current="page">Home</a>
             </li>
@@ -24,13 +24,13 @@
             </li>
           </ul>
         </header>
-        <header v-if="$isLogged.value && !$isAdmin.value" class="user-header d-flex justify-content-center py-3">
+        <header v-if="$isLogged.value && !$isAdmin.value" class="user-header d-flex justify-content-center align-items-center py-3 w-75">
           <ul class="nav nav-pills">
             <li class="nav-item">
-              <a class="nav-link" @click="goBackToHome" aria-current="page">Home</a>
+              <a class="nav-link" @click="setActiveNav($event); goBackToHome()" aria-current="page">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="goToUserView">User</a>
+              <a class="nav-link" @click="setActiveNav($event); goToUserView()">User</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" @click="logout">Logout</a>
@@ -47,7 +47,7 @@
             Up</button>
         </div>
       </div>
-      <router-view class="routerView flex-grow-"></router-view>
+      <router-view class="routerView"></router-view>
     </div>
   </div>
 
@@ -151,23 +151,25 @@ export default {
 .main-box {
   background-color: #339751;
   border-radius: 60px;
-  max-width: 60%;
-  width: 70%;
-  max-height: 90%;
-  height: 70%;
+
 }
 
 .buttons {
   margin-top: 5%;
-
   margin-bottom: 2rem;
 }
 
 
 
-.admin-header,
-user-header {
+.admin-header {
   border-bottom: 1px solid #0f0f0f;
+  width: 75vh;
+  
+}
+
+.user-header {
+  border-bottom: 1px solid #0f0f0f;
+  width: 75vh;
 }
 
 .nav-link {

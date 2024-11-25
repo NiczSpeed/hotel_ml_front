@@ -111,7 +111,7 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error.response.data.message);
+        window.alert(error);
       }
     },
     async fetchHotels() {

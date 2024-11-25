@@ -1,65 +1,75 @@
 <template>
-  <h1>Witaj testuje tokeny JWT dla Usera</h1>
-  <h1>{{ data }}</h1>
-  <div id="userDetails">
-    <button
-      @click="getMyDetails()"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Show my data
-    </button>
-    <button
-      @click="hideUserInfo()"
-      id="hide"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Hide data
-    </button>
-    <div v-if="userDataIsShowed && !isLoading" class="userDetails">
-      <h2>Name: {{ userData.firstName }}</h2>
-      <h2>Lastname: {{ userData.lastName }}</h2>
-      <h2>Email: {{ userData.email }}</h2>
-      <h2>Date of account creation: {{ userData.creationDate }}</h2>
-    </div>
-  </div>
-  <div id="userReservationData">
-    <button
-      @click="getAllReservations()"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      My Reservations
-    </button>
-
-    <button
-      @click="hideReservationInfo()"
-      id="hide"
-      style="height: 60px; width: 120px; color: brown"
-    >
-      Hide resevations
-    </button>
-    <div v-if="reservationDataIsShowed && !isLoading" class="reservations">
-      <div
-        v-for="(reservation, index) in userReservationData"
-        :key="index"
-        :value="reservation"
-      >
-        <h2>Reservation number: {{ index + 1 }}</h2>
-        <h3>Hotel city: {{ reservation.hotelCity }}</h3>
-        <h3>Hotel name: {{ reservation.hotelName }}</h3>
-        <h3>Room number: {{ reservation.roomNumber }}</h3>
-        <h3>Start date: {{ reservation.startDate }}</h3>
-        <h3>End date: {{ reservation.endDate }}</h3>
-        <h3>Price: {{ reservation.amountPayable }}</h3>
-        <button
-          @click="deleteReservation(reservation.uuid)"
-          id="hide"
-          style="height: 60px; width: 120px; color: brown"
-        >
-          delete
-        </button>
+  <div class="user-container d-flex align-items-center justify-content-center w-100 h-100">
+    <div class="card w-75 mb-3" v-if="userDataIsShowed && !isLoading">
+      <div class="card-body">
+        <h5 class="card-title">User details</h5>
+        <p class="card-text"><strong>Name: </strong> {{ userData.firstName }}</p>
+        <p class="card-text"><strong>Lastname: </strong>{{ userData.lastName }}</p>
+        <p class="card-text"><strong>Email: </strong>{{ userData.email }}</p>
+        <p class="card-text"><strong>Date of account creation: </strong>{{ userData.creationDate }}</p>
+        <div class="text-center mt-3">
+          <button class="btn btn-outline-success">
+            <i class="bi bi-pencil"></i> Update Data
+          </button>
+        </div>
       </div>
     </div>
+    <div class="table-container w-75 overflow-auto">
+    <table v-if="reservationDataIsShowed && !isLoading" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Hotel city</th>
+          <th scope="col">Week Price</th>
+          <th scope="col">Hotel name</th>
+          <th scope="col">Room number</th>
+          <th scope="col">Start date</th>
+          <th scope="col">End date</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(reservation, index) in userReservationData" :key="index" :value="reservation">
+          <td>{{ index + 1 }}</td>
+          <td>{{ reservation.hotelCity }}</td>
+          <td>{{ reservation.hotelName }}</td>
+          <td>{{ reservation.roomNumber }}</td>
+          <td>{{ reservation.startDate }}</td>
+          <td>{{ reservation.endDate }}</td>
+          <td>{{ reservation.amountPayable }}</td>
+          <td>
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+              @click="deleteReservation(reservation.uuid)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+  </div>
+
+
+
+  <!-- <div class="user-container d-flex align-items-center justify-content-center w-100 h-100 "> -->
+  <footer class="user-footer py-3 w-75 d-flex align-items-center justify-content-center mx-auto">
+    <ul class="nav nav-pills d-flex align-items-center justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link" @click="setActiveNav($event); getMyDetails()" aria-current="page">Get account details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="setActiveNav($event); hideUserInfo()">Hide details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="setActiveNav($event); getAllReservations()">Reservations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="setActiveNav($event); hideReservationInfo()">Hide reservations</a>
+      </li>
+    </ul>
+  </footer>
+  <!-- </div> -->
+
 </template>
 
 <script>
@@ -81,6 +91,11 @@ export default {
     this.getDetails();
   },
   methods: {
+    setActiveNav(event) {
+      const element = event.target;
+      document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active') });
+      element.classList.add('active');
+    },
     async getDetails() {
       try {
         const token = sessionStorage.getItem("token");
@@ -117,7 +132,6 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("headerek w ciele: " + response.config.headers);
         this.userReservationData = response.data.message;
         this.reservationDataIsShowed = true;
         this.isLoading = false;
@@ -163,4 +177,15 @@ export default {
 </script>
 
 <style>
+.user-container {
+  height: 10%;
+}
+
+.user-footer {
+  border-top: 1px solid #0f0f0f;
+}
+
+.card {
+  width: 120%;
+}
 </style>
