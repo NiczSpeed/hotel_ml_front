@@ -77,11 +77,11 @@ export default {
         this.data = response.data;
 
         if (response.status === 201) {
-          window.alert("Registered with success!");
+          this.$root.$refs.infoModal.showModal("Success", "Hotel was created successfully.");
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error.response.data.message);
+        this.$root.$refs.infoModal.showModal("Error", error);
       }
     },
   },

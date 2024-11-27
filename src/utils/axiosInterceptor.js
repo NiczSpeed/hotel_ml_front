@@ -21,15 +21,16 @@ const api = axios.create({ baseURL: 'http://localhost:8081' });
 api.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && error.response.status == 402) {
+        if (error.response && error.response.status == 401) {
+            
             router.push("/");
             app.config.globalProperties.$isLogged.value = false;
             app.config.globalProperties.$isAdmin.value = false;
             sessionStorage.removeItem("token");
-            return Promise.reject("You session expired!");
+            return Promise.reject("Your session expired.");
         }
-        
-        else {return Promise.reject(error.response.data.message);}
+
+        else { return Promise.reject(error.response.data.message); }
     }
 );
 

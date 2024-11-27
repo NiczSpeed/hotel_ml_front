@@ -35,7 +35,7 @@
 
 
   <div class="container my-4">
-    <div class="accordion">
+    <div v-if="acordeonIsShowed" class="accordion">
       <div class="accordion-item" id="acordionItem" v-for="(hotel, hotelIndex) in hotels" :key="hotelIndex">
         <h2 class="accordion-header" :id="'heading-' + hotelIndex">
           <button class="accordion-button" type="button" :class="{ collapsed: !openedAcordeaon[hotelIndex] }"
@@ -77,7 +77,7 @@
                   <td>{{ room.description }}</td>
                   <td>
                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                      @click="earnReservationPrice(hotel.name, room.number)" data-bs-target="#exampleModal">
+                      @click="earnReservationPrice(hotel.name, room.number)" data-bs-target="#confirmReservationModal">
                       Reserve
                     </button>
                   </td>
@@ -90,11 +90,11 @@
     </div>
   </div>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="confirmReservationModal" tabindex="-1" aria-labelledby="confirmReservationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm your reservation</h1>
+          <h1 class="modal-title fs-5" id="confirmReservationModalLabel">Confirm your reservation</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -127,6 +127,7 @@ export default {
   name: "SearchFreeRoomsView",
   data() {
     return {
+      acordeonIsShowed: false,
       openedAcordeaon: [],
       cities: [],
       hotels: [],
@@ -145,18 +146,20 @@ export default {
         startDate: "",
         endDate: "",
       },
-    };
+    }
+  },
+  mounted() {
+    this.$eventBus.on('logout', this.closeAccordion);
+  },
+  beforeUnmount() {
+    this.$eventBus.off('logout', this.closeAccordion);
   },
   async created() {
     try {
       if (this.$isLogged.value) { this.cities = await fetchCities(); }
 
     } catch (error) {
-      console.error(
-        "There was an error with fetch list of cities! Error: ",
-        error
-      );
-      throw error;
+      this.$root.$refs.infoModal.showModal("Error", "There was an error with fetch list of cities!");
     }
   },
   methods: {
@@ -171,13 +174,6 @@ export default {
       this.reservationPriceForm.startDate = this.form.startDate;
       this.reservationPriceForm.endDate = this.form.endDate;
     },
-    goToReservationView(hotel, room) {
-      localStorage.setItem("hotel", JSON.stringify(hotel));
-      localStorage.setItem("room", JSON.stringify(room));
-      localStorage.setItem("form", JSON.stringify(this.form));
-      this.$router.push({ name: "Reservation" });
-      this.$router.forward();
-    },
     async submitForm() {
       try {
         const token = sessionStorage.getItem("token");
@@ -191,14 +187,14 @@ export default {
         );
         this.hotels = response.data.message;
         this.openedAcordeaon = this.hotels.map(() => false)
+        this.acordeonIsShowed = true;
         this.isLoading = false;
-
-        if (response.status === 201) {
-          window.alert("Registered with success!");
+        if (response.status === 200) {
+          console.log(this.acordeonIsShowed)
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error);
+        this.$root.$refs.infoModal.showModal("Error", error);
       }
     },
     async earnReservationPrice(hotelName, roomNumber) {
@@ -216,7 +212,7 @@ export default {
         );
         this.price = response.data.message;
       } catch (error) {
-        window.alert(error);
+        this.$root.$refs.infoModal.showModal("Error", error);
       }
     },
     async confirmReservation() {
@@ -233,14 +229,18 @@ export default {
         );
         this.data = response.data;
 
-        if (response.status === 201) {
-          window.alert("Registered with success!");
-          this.$router.push("/");
-        }
+        if (response.status === 201)
+        this.$root.$refs.infoModal.showModal("Success", "Registered with success.");
+        this.closeAccordion();
+        this.$router.push("/")
+
       } catch (error) {
-        window.alert(error.response.data.message);
+        this.$root.$refs.infoModal.showModal("Error", error);
       }
     },
+    closeAccordion() {
+      this.acordeonIsShowed = false;
+    }
   },
 };
 </script>
@@ -260,5 +260,4 @@ export default {
   background-color: gray;
   color: white;
 }
-
 </style>

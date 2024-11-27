@@ -48,6 +48,7 @@
         </div>
       </div>
       <router-view class="routerView"></router-view>
+      <InfoModal ref="infoModal"/>
     </div>
   </div>
 
@@ -55,9 +56,11 @@
 
 <script>
 import api from "./utils/axiosInterceptor";
+import InfoModal from "./components/InfoModal.vue";
 
 import { isAdmin } from "./utils/authMethods";
 export default {
+  components: { InfoModal },
   name: "App",
   mounted() {
     if (sessionStorage.getItem("token") != null) {
@@ -113,12 +116,13 @@ export default {
         });
         sessionStorage.removeItem("token");
         this.data = response.data;
-        window.alert("U were logout out!");
+        this.$eventBus.emit('logout');
+        this.$root.$refs.infoModal.showModal("Success", "You have been successfully logged out.");
         this.$router.push("/");
         this.$isLogged.value = false;
         this.$isAdmin.value = false;
       } catch (error) {
-        window.alert(error.response.data.message);
+        this.$root.$refs.infoModal.showModal("Error", error);
       }
     },
   },

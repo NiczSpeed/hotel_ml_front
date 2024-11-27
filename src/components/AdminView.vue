@@ -28,9 +28,7 @@
         </div>
       </div>
     </div>
-
   </div>
-
 
 </template>
 
@@ -62,7 +60,7 @@ export default {
         });
         this.data = response.data;
       } catch (error) {
-        window.alert(error);
+        this.$root.$refs.infoModal.showModal("Error", error)
       }
     },
     async submitForm() {
@@ -75,11 +73,11 @@ export default {
           },
         });
         if (response.status === 200) {
-          window.alert("Admin grantet correctly!");
+          this.$root.$refs.infoModal.showModal("Success", "Admin grantet correctly.");
           this.$router.push("/");
         }
       } catch (error) {
-        window.alert(error);
+        this.$root.$refs.infoModal.showModal("Error", error);
       }
     },
   },

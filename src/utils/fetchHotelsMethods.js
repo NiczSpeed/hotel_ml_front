@@ -10,6 +10,6 @@ export async function fetchCities() {
       });
       return response.data.message;
     } catch (error) {
-      window.alert(error);
+      console.error("There was an error with fetch list of cities! Error: ", error);
     }
   }
