@@ -175,7 +175,8 @@ export default {
         email: "",
         password: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        userHasReservation: ""
       },
       reservationUpdateForm: {
         uuid: "",
@@ -186,8 +187,8 @@ export default {
   },
   created() {
     this.getDetails();
-  },
-
+    this.userUpdateform.userHasReservation = false;
+  },  
   methods: {
     setReservationUuid(uuid) {
       this.reservationUpdateForm.uuid = uuid;
@@ -241,12 +242,18 @@ export default {
       try {
         const token = sessionStorage.getItem("token");
         const currentEmail = this.userData.email;
-        console.log(this.userUpdateform.firstName);
         if (!this.userUpdateform.firstName.trim() || !this.userUpdateform.lastName.trim()) {
           this.$root.$refs.infoModal.showModal("Error", "You have blank fields in the form (except for the password).")
         }
         else {
           if (!this.userUpdateform.password) { delete this.userUpdateform.password; }
+          if (this.userUpdateform.email !== currentEmail) {
+            this.getAllReservations();
+            if (this.userReservationData.length !== 0) {
+              console.log("super znaczy ze miales rezerwacje!")
+              this.userUpdateform.userHasReservation = true;
+            }
+          }
           await api.patch("/user/update", this.userUpdateform, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -271,6 +278,8 @@ export default {
         }
 
       } catch (error) {
+        this.hideUserInfo();
+        this.hideReservationInfo();
         this.$root.$refs.infoModal.showModal("Error", error)
       }
     },
