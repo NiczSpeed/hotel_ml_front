@@ -11,7 +11,7 @@ export function isAdmin() {
     const roles = decodedToken.roles || [];
     return roles.includes('ADMIN');
   } catch (error) {
-    console.error('Error while decoding token: ', error.message);
+    this.$root.$refs.infoModal.showModal("Error", "Error while decoding token!");
     return false;
   }
 }

@@ -57,7 +57,6 @@
       <button type="submit" class="btn btn-secondary w-100">Create room</button>
     </form>
   </div>
-
 </template>
 
 <script>
@@ -86,8 +85,7 @@ export default {
     try {
       this.cities = await fetchCities();
     } catch (error) {
-      console.error("There was an error with fetch list of cities! Error: ", error);
-      throw error;
+      this.$root.$refs.infoModal.showModal("Error", "There was an error with fetch list of cities! Error!");
     }
 
   },

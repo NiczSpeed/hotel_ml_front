@@ -14,7 +14,8 @@
         </div>
       </div>
       <div class="form-floating mb-3">
-        <input v-model="form.firstName" type="text" class="form-control w-100" id="floatingName" placeholder="Name" required>
+        <input v-model="form.firstName" type="text" class="form-control w-100" id="floatingName" placeholder="Name"
+          required>
         <label class="ps-3" for="floatingEmail">Name</label>
       </div>
       <div class="form-floating mb-3">
@@ -25,7 +26,6 @@
       <button type="submit" class="btn btn-secondary w-100">Submit</button>
     </form>
   </div>
-
 </template>
 
 <script>

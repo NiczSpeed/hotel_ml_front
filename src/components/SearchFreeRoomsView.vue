@@ -90,7 +90,8 @@
     </div>
   </div>
 
-  <div class="modal fade" id="confirmReservationModal" tabindex="-1" aria-labelledby="confirmReservationModalLabel" aria-hidden="true">
+  <div class="modal fade" id="confirmReservationModal" tabindex="-1" aria-labelledby="confirmReservationModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -116,7 +117,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -230,7 +230,7 @@ export default {
         this.data = response.data;
 
         if (response.status === 201)
-        this.$root.$refs.infoModal.showModal("Success", "Registered with success.");
+          this.$root.$refs.infoModal.showModal("Success", "Registered with success.");
         this.closeAccordion();
         this.$router.push("/")
 
