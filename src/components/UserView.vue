@@ -153,13 +153,10 @@
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
 import api from "../utils/axiosInterceptor";
-
 
 export default {
   name: "UserView",
@@ -188,7 +185,7 @@ export default {
   created() {
     this.getDetails();
     this.userUpdateform.userHasReservation = false;
-  },  
+  },
   methods: {
     setReservationUuid(uuid) {
       this.reservationUpdateForm.uuid = uuid;

@@ -35,7 +35,6 @@
           <input type="tel" class="form-control w-100" id="floatingState" placeholder="123456789" required
             v-model="form.contact" pattern="[0-9]{9}" />
           <label lass="ps-4" for="floatingContact"> Contact number </label>
-
         </div>
       </div>
       <button type="submit" class="btn btn-secondary w-100">Create Hotel</button>

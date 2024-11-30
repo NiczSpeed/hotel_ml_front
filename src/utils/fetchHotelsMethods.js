@@ -10,6 +10,6 @@ export async function fetchCities() {
       });
       return response.data.message;
     } catch (error) {
-      console.error("There was an error with fetch list of cities! Error: ", error);
+      this.$root.$refs.infoModal.showModal("Error", "There was an error with fetch list of cities!");
     }
   }

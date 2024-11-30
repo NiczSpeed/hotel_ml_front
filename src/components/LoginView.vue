@@ -14,7 +14,6 @@
       <button type="submit" class="btn btn-secondary w-100">Submit</button>
     </form>
   </div>
-
 </template>
 
 <script>
