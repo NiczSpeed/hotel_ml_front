@@ -14,17 +14,18 @@
               <a class="nav-link" @click="setActiveNav($event); goToUserView()">User</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="setActiveNav($event); gotToCreateHotelView()">Hotel</a>
+              <a class="nav-link" @click="setActiveNav($event); goToCreateHotelView()">Hotel</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="setActiveNav($event); gotToCreateRoomView()">Room</a>
+              <a class="nav-link" @click="setActiveNav($event); goToCreateRoomView()">Room</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" @click="logout">Logout</a>
             </li>
           </ul>
         </header>
-        <header v-if="$isLogged.value && !$isAdmin.value" class="user-header d-flex justify-content-center align-items-center py-3 w-75">
+        <header v-if="$isLogged.value && !$isAdmin.value"
+          class="user-header d-flex justify-content-center align-items-center py-3 w-75">
           <ul class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link" @click="setActiveNav($event); goBackToHome()" aria-current="page">Home</a>
@@ -48,10 +49,9 @@
         </div>
       </div>
       <router-view class="routerView"></router-view>
-      <InfoModal ref="infoModal"/>
+      <InfoModal ref="infoModal" />
     </div>
   </div>
-
 </template>
 
 <script>
@@ -89,11 +89,11 @@ export default {
       this.$router.push("/admin");
       this.$router.forward();
     },
-    gotToCreateHotelView() {
+    goToCreateHotelView() {
       this.$router.push("/hotel/create");
       this.$router.forward();
     },
-    gotToCreateRoomView() {
+    goToCreateRoomView() {
       this.$router.push("/room/create");
       this.$router.forward();
     },
@@ -168,7 +168,7 @@ export default {
 .admin-header {
   border-bottom: 1px solid #0f0f0f;
   width: 75vh;
-  
+
 }
 
 .user-header {
