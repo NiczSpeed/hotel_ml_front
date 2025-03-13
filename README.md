@@ -66,17 +66,17 @@ These diagrams illustrate the main object-oriented structure of the application,
 
 ---
 
-#### 🛡️ Main Class
+#### ✨ Main Class
 This diagram illustrates main class in service
 
 🔗 [View the main class](docs/Class/Hotel_ML_Front_Diagram_Main.svg)
 
 ---
 
-#### 🚨 Component Views Classes
-This diagram illustrates component views classes in service
+#### 🧩 Component View Classes
+This diagram illustrates component view classes in service
 
-🔗 [View the component views classes](docs/Class/Hotel_ML_Front_Diagram_Component_Views.svg)
+🔗 [View the component view classes](docs/Class/Hotel_ML_Front_Diagram_Component_Views.svg)
 
 
 
